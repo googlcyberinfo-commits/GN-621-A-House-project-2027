@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0a2a5c">
+  <meta name="description" content="House Project 2027 - Housing Needs & Basic Facilities Information System">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>House Project 2027</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Language Selector -->
+  <div id="lang-bar">
+    <div class="lang-buttons">
+      <button class="lang-btn active" data-lang="ta">தமிழ்</button>
+      <button class="lang-btn" data-lang="si">සිංහල</button>
+      <button class="lang-btn" data-lang="en">English</button>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header id="app-header">
+    <div class="header-content">
+      <div class="logo-area">
+        <div class="crest">🏠</div>
+        <div class="title-block">
+          <h1 id="app-title">HOUSE PROJECT 2027</h1>
+          <p id="app-subtitle">HOUSING NEEDS & BASIC FACILITIES INFORMATION SYSTEM</p>
+        </div>
+      </div>
+      <div class="office-info">
+        <p id="office-gn">Grama Niladhari Division: 621/A Nuraichcholai</p>
+        <p id="office-ds">Divisional Secretariat Division: Kalpitiya</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation -->
+  <nav id="main-nav">
+    <button class="nav-btn active" data-view="dashboard" id="nav-dashboard">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label" data-i18n="nav.dashboard">Dashboard</span>
+    </button>
+    <button class="nav-btn" data-view="form" id="nav-form">
+      <span class="nav-icon">➕</span>
+      <span class="nav-label" data-i18n="nav.new">New Application</span>
+    </button>
+    <button class="nav-btn" data-view="list" id="nav-list">
+      <span class="nav-icon">📋</span>
+      <span class="nav-label" data-i18n="nav.list">All Applications</span>
+    </button>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main id="app-content">
+
+    <!-- DASHBOARD VIEW -->
+    <section id="view-dashboard" class="view active">
+      <div class="dashboard-grid">
+        <div class="stat-card primary">
+          <div class="stat-number" id="stat-total">0</div>
+          <div class="stat-label" data-i18n="dash.total">Total Applications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-today">0</div>
+          <div class="stat-label" data-i18n="dash.today">Today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-land-yes">0</div>
+          <div class="stat-label" data-i18n="dash.landYes">Own Land</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-no-house">0</div>
+          <div class="stat-label" data-i18n="dash.noHouse">No Completed House</div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <button class="action-btn primary" id="btn-new-app">
+          <span>➕</span>
+          <span data-i18n="btn.newApp">Add New Application</span>
+        </button>
+        <button class="action-btn" id="btn-export-json">
+          <span>💾</span>
+          <span data-i18n="btn.export">Export Backup (JSON)</span>
+        </button>
+        <button class="action-btn" id="btn-import-json">
+          <span>📥</span>
+          <span data-i18n="btn.import">Import Backup</span>
+        </button>
+        <input type="file" id="import-file" accept=".json" hidden>
+      </div>
+
+      <div class="recent-section">
+        <h2 data-i18n="dash.recent">Recent Applications</h2>
+        <div id="recent-list" class="app-list"></div>
+      </div>
+    </section>
+
+    <!-- FORM VIEW -->
+    <section id="view-form" class="view">
+      <div class="form-header">
+        <h2 id="form-title" data-i18n="form.title">New Application</h2>
+        <button class="btn-secondary" id="btn-cancel-form" data-i18n="btn.cancel">Cancel</button>
+      </div>
+
+      <form id="application-form" autocomplete="off">
+        <input type="hidden" id="edit-id" value="">
+
+        <!-- SECTION A -->
+        <fieldset class="form-section">
+          <legend data-i18n="sec.a">SECTION A: BASIC INFORMATION</legend>
+
+          <div class="form-group">
+            <label data-i18n="a.registered">1. Has the applicant been registered in the permanent electoral register?</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="electoralRegistered" value="yes" required>
+                <span data-i18n="yes">Yes</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="electoralRegistered" value="no">
+                <span data-i18n="no">No</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group" id="voter-details-group" style="display:none;">
+            <label data-i18n="a.voterNo">2. Voter Registration Number / Address</label>
+            <input type="text" id="voterRegNo" name="voterRegNo" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="a.fullName">3. Full Name of Head of Household</label>
+            <input type="text" id="fullName" name="fullName" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="a.nic">4. National Identity Card Number (NIC)</label>
+            <input type="text" id="nic" name="nic" class="form-control" required pattern="[0-9]{9}[vVxX]|[0-9]{12}" title="Valid NIC required">
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="a.address">5. Permanent Address</label>
+            <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="a.phone">6. Telephone Number</label>
+              <input type="tel" id="phone" name="phone" class="form-control">
+            </div>
+            <div class="form-group">
+              <label data-i18n="a.whatsapp">7. WhatsApp Number</label>
+              <input type="tel" id="whatsapp" name="whatsapp" class="form-control">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- SECTION B -->
+        <fieldset class="form-section">
+          <legend data-i18n="sec.b">SECTION B: HOUSE AND BASIC FACILITIES INFORMATION</legend>
+
+          <div class="form-group">
+            <label data-i18n="b.ownLand">1. Does the applicant own residential land?</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="ownLand" value="yes" required>
+                <span data-i18n="yes">Yes</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="ownLand" value="no">
+                <span data-i18n="no">No</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group" id="land-nature-group" style="display:none;">
+            <label data-i18n="b.landNature">Nature of land:</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="landNature" value="deed">
+                <span data-i18n="b.deed">Deed</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="landNature" value="permit">
+                <span data-i18n="b.permit">Permit</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="landNature" value="other">
+                <span data-i18n="b.other">Other</span>
+              </label>
+            </div>
+            <div id="land-other-group" style="display:none; margin-top:10px;">
+              <input type="text" id="landOtherText" name="landOtherText" class="form-control" placeholder="Specify...">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="b.houseCondition">2. Current House Condition:</label>
+            <div class="checkbox-group">
+              <label class="check-label">
+                <input type="checkbox" name="houseCondition" value="no_house">
+                <span data-i18n="b.cond1">No completed house (rented house / relative's house)</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" name="houseCondition" value="partial">
+                <span data-i18n="b.cond2">House partially completed</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" name="houseCondition" value="damaged">
+                <span data-i18n="b.cond3">House partially damaged</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" name="houseCondition" value="completed">
+                <span data-i18n="b.cond4">Fully completed house available</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="b.toilet">3. Is toilet facility available?</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="toilet" value="yes" required>
+                  <span data-i18n="yes">Yes</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="toilet" value="no">
+                  <span data-i18n="no">No</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label data-i18n="b.electricity">4. Is electricity facility available?</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="electricity" value="yes" required>
+                  <span data-i18n="yes">Yes</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="electricity" value="no">
+                  <span data-i18n="no">No</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="b.notes">5. Additional Needs / Special Notes</label>
+            <textarea id="notes" name="notes" class="form-control" rows="4"></textarea>
+          </div>
+        </fieldset>
+
+        <!-- SECTION C -->
+        <fieldset class="form-section">
+          <legend data-i18n="sec.c">SECTION C: APPLICANT DECLARATION</legend>
+          <div class="declaration-box">
+            <p id="declaration-text" data-i18n="c.declaration">
+              மேலே குறிப்பிடப்பட்டுள்ள தகவல்கள் அனைத்தும் எனது அறிவுக்கு எட்டிய வரையில் உண்மையானவையும், சரியானவையும் என உறுதிப்படுத்துகிறேன்.
+            </p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="c.date">Date</label>
+              <input type="date" id="applicantDate" name="applicantDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label data-i18n="c.signature">Head of Household Signature</label>
+              <input type="text" id="applicantSignature" name="applicantSignature" class="form-control" placeholder="Type name as signature">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- SECTION D -->
+        <fieldset class="form-section office-use">
+          <legend data-i18n="sec.d">SECTION D: OFFICE USE ONLY (GRAMANILADHARI)</legend>
+          <div class="declaration-box">
+            <p id="gn-verification" data-i18n="d.verification">மேலே விபரங்கள் சரிபார்க்கப்பட்டன.</p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="d.date">Date</label>
+              <input type="date" id="gnDate" name="gnDate" class="form-control">
+            </div>
+            <div class="form-group">
+              <label data-i18n="d.signature">Grama Niladhari Signature</label>
+              <input type="text" id="gnSignature" name="gnSignature" class="form-control">
+            </div>
+          </div>
+          <div class="stamp-area">
+            <div class="stamp-box" data-i18n="d.stamp">Official Stamp Area</div>
+          </div>
+        </fieldset>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="btn-save">
+            <span data-i18n="btn.save">Save Application</span>
+          </button>
+          <button type="button" class="btn-secondary" id="btn-reset" data-i18n="btn.reset">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- LIST VIEW -->
+    <section id="view-list" class="view">
+      <div class="list-header">
+        <h2 data-i18n="list.title">All Applications</h2>
+        <div class="search-box">
+          <input type="search" id="search-input" data-i18n-placeholder="list.search" placeholder="Search by name, NIC or address...">
+          <button id="btn-clear-search" class="btn-icon" title="Clear">✕</button>
+        </div>
+      </div>
+      <div id="applications-list" class="app-list"></div>
+      <div id="no-results" class="empty-state" style="display:none;" data-i18n="list.noResults">No applications found.</div>
+    </section>
+
+    <!-- DETAIL / PRINT VIEW (hidden until needed) -->
+    <section id="view-detail" class="view">
+      <div class="detail-actions no-print">
+        <button class="btn-secondary" id="btn-back-list" data-i18n="btn.back">← Back</button>
+        <button class="btn-primary" id="btn-print" data-i18n="btn.print">🖨️ Print / PDF</button>
+        <button class="btn-secondary" id="btn-edit-from-detail" data-i18n="btn.edit">Edit</button>
+        <button class="btn-danger" id="btn-delete-from-detail" data-i18n="btn.delete">Delete</button>
+      </div>
+      <div id="print-area" class="print-document">
+        <!-- Populated by JS to match original form layout -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Confirm Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button class="btn-danger" id="modal-confirm" data-i18n="btn.confirm">Confirm</button>
+        <button class="btn-secondary" id="modal-cancel" data-i18n="btn.cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
